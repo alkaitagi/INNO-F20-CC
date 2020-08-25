@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "INNO-F20-CC/1.0.0": {
+        "runtime": {
+          "INNO-F20-CC.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "INNO-F20-CC/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
