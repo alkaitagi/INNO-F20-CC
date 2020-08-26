@@ -1,0 +1,20 @@
+class Test13 is
+    var catalog: Array[Song](10000)
+    method Listen(id: Integer) is
+      catalog.get(id).streams := catalog.get(id).streams.Plus(1)
+    end
+    
+    method Add(id: Integer, duration: Integer) is
+      catalog.set(id, Song(id, duration))
+    end
+end    
+    
+class Song is
+  var id: Integer(0)
+  var duration: Integer(0)
+  var streams: Integer(0)
+  this(arg1: Integer, arg2: Integer) is
+    this.id := arg1
+    this.duration := arg2
+  end
+end
