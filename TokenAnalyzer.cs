@@ -8,9 +8,10 @@ namespace INNO_F20_CC
 {
     class TokenAnalyzer
     {
-        struct Token
+        class Token
         {
             public string Type { get; set; }
+            public string Context { get; set; }
             public string Value { get; set; }
             public int Depth { get; set; }
             public int Line { get; set; }
@@ -51,6 +52,7 @@ namespace INNO_F20_CC
             var tokens = new List<Token>();
             var depth = 0;
             var line = 1;
+            var inComment = false;
             foreach (var word in words)
             {
                 if (word == "\n")
@@ -58,6 +60,18 @@ namespace INNO_F20_CC
                     line++;
                     continue;
                 }
+                if (inComment)
+                {
+                    if (word == "*/")
+                        inComment = false;
+                    continue;
+                }
+                if (word == "/*")
+                {
+                    inComment = true;
+                    continue;
+                }
+
                 var token = new Token()
                 {
                     Value = word,
