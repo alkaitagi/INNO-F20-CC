@@ -1,4 +1,4 @@
-class Test14
+class Test14 is
   method Rem(arg1: Real, arg2: Real): Real is
     var control: Integer(arg1)
     while control.Greater(0.0) loop
