@@ -34,7 +34,7 @@ namespace INNO_F20_CC
 
         public static string[] Split(string source) =>
             Regex
-                .Replace(source, @"\s|(:=|[.,:\(\)\[\]])", @" $1 ")
+                .Replace(source, @"\s|(\d+\.\d+|:=|[\.,:\(\)\[\]])", @" $1 ")
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         public static void Init(string source)
