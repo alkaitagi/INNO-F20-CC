@@ -1,4 +1,3 @@
-//Failing test
 class Test4 is
 	this is
 		var size : Integer(3)
