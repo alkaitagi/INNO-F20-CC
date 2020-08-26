@@ -2,7 +2,7 @@
 {
     class Program
     {
-        static void Main(string[] args) =>
-            TokenAnalyzer.Analyze("source.txt");
+        static void Main(string[] args) => 
+            TokenAnalyzer.Analyze(args[0]);
     }
 }
