@@ -35,3 +35,6 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# INNO-F20-CC
+tokens.json
