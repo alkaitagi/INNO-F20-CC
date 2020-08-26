@@ -1,0 +1,27 @@
+class Test15 is
+  var minutes: Integer(0)
+  var hours: Integer(0)
+  
+  this(h: Integer, m: Integer) is
+    this.minutes := m
+    this.hours := h
+  end
+  
+  method Set(h: Integer, m: Integer) is
+    this.minutes := m
+    this.hours := h
+  end
+  
+  method OneMinute() is
+    if this.minutes.Less(59) then
+      this.minute.Plus(1) else
+        if this.hours.Less(23) then
+          this.hours.Plus(1)
+          this.minutes := 0 else
+            this.hours := 0
+            this.minutes :=0
+        end
+    end
+  end
+        
+end
