@@ -1,0 +1,25 @@
+class Test14
+  method Rem(arg1: Real, arg2: Real): Real is
+    var control: Integer(arg1)
+    while control.Greater(0.0) loop
+      control.Minus(arg2)
+    end
+    control := control.Plus(arg2)
+    return control
+  end
+  
+  method Floor(arg: Real): Real is
+    var rem: Integer(Rem(arg, 1.0))
+    arg := arg.Minus(rem)
+    return arg
+  end
+  
+  method Ceil(arg: Real): Real is
+    arg := Floor(arg).Plus(1.0)
+    return arg
+  end
+  
+  method Round(arg: Real): Real is
+    if Rem(arg, 1.0).Greater(0.5) then return Ceil(arg) else return Floor(arg) end
+  end
+end
