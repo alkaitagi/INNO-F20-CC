@@ -1,4 +1,4 @@
-var i is 1
+var i is 1 // sueta
 while i.LessEqual(a.Size) loop
  x := a.get(i)
  a.set(i,x.Mult(x))

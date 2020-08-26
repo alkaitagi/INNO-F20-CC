@@ -43,7 +43,7 @@ namespace INNO_F20_CC
 
         static string[] SplitSource(string source) =>
            Regex
-               .Replace(source, @"(\n)|\s|(\d+\.\d+|:=|[\.,:\(\)\[\]])", @" $1 ")
+               .Replace(source, @"(\n)|\s|//.*|(\d+\.\d+|:=|[\.,:\(\)\[\]])", @" $1 ")
                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         static Token[] ClassifyWords(string[] words)
