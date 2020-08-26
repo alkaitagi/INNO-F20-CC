@@ -1,0 +1,10 @@
+class Test2 is
+	this (n : Integer) is
+		var i : Integer(0)
+		var sum : Integer(0)
+		while i.LessEqual(n) loop
+			sum := sum.Plus(i)
+			i := i.Plus(1)
+		end
+	end
+end 

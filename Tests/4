@@ -1,0 +1,37 @@
+class bank_account is
+	var card_id : Integer
+	var owner_id
+	var money : Integer
+
+	this (a : Integer, b : Integer) is 
+		card_id := a
+		owner_id := b
+		money := 0
+	end
+
+	method add_money (a : Integer) is
+		if a.Greater(0) then 
+			money := money.Plus(a)
+		end
+	end
+
+	method draw_money (a : Integer) is
+		c := money,minus(a)
+		if c.GreaterEqual(0) then
+			money := c
+		end
+	end
+
+	method show : Integer is 
+		return money
+	end
+
+end
+
+class inheritence extends bank_account is
+	var heir_id = bank_account
+
+	this(a : bank_account) is
+		heir_id := a
+	end
+end

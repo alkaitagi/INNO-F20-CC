@@ -1,0 +1,29 @@
+class car is
+	var speed : Real
+	var max_speed : Real
+	
+	var acceleration : Real
+
+	this (ms : Real) is
+		speed := 0
+		max_speed := ms
+		acceleration := 0
+	end
+
+	method speed_up (acc : Real) is
+		while speed.Less(max_speed) loop
+			speed := speed.Plus(acc)
+		end
+		speed := max_speed
+	end
+
+	method speed_up (acc : Real, till : Real) is
+		till := till.Minus(speed)
+
+		while till.Greater(0) loop
+			speed := speed.Plus(acc)
+			till := till.Minus(acc)
+		end
+	end
+
+end

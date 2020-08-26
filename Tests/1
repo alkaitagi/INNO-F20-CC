@@ -1,0 +1,8 @@
+class main is
+	method main is
+		var beka : bank_account(737, 017)
+
+		var a : Integer(1)
+		var b := "asd" + a
+	end
+end

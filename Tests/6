@@ -1,0 +1,8 @@
+class Test1 is
+	this(a : Integer, b : Integer) is
+		var c : Integer(a)
+		var d : Integer(b)
+		c := c.Plus(d)
+	end
+end
+

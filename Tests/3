@@ -1,0 +1,14 @@
+class math_formules is 
+	method factorial (a : Integer) : Integer is
+		var i := 1
+		var c := 1
+
+		while i.LessEqual(a) loop
+			c := c.Mult(i)
+			i := i.Plus(1)
+		end
+
+		return c
+	end
+end
+
