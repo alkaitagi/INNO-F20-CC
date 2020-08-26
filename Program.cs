@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace INNO_F20_CC
 {
@@ -6,7 +6,7 @@ namespace INNO_F20_CC
     {
         static void Main(string[] args)
         {
-            Test_1.Launch();
+            TokenAnalyzer.Init(File.ReadAllText("source.txt"));
         }
     }
 }
