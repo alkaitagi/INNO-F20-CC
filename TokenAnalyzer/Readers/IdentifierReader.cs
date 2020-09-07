@@ -17,6 +17,7 @@ namespace INNO_F20_CC.TokenAnalyzer
             if (c == '_' || char.IsDigit(c) || IsLatinLetter(c))
             {
                 token += c;
+                i++;
                 return true;
             }
             return false;

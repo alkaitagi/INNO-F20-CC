@@ -11,6 +11,7 @@ namespace INNO_F20_CC.TokenAnalyzer
             if (char.IsDigit(c))
             {
                 token += c;
+                i++;
                 return true;
             }
             return false;

@@ -20,11 +20,14 @@ namespace INNO_F20_CC.TokenAnalyzer
             var c = source[i];
             if (c == ':' && source[i + 1] == '=')
             {
-                i += 2;
                 token = ":=";
+                i += 2;
             }
-            if (IsOperand(c))
+            else if (IsOperand(c))
+            {
                 token += c;
+                i++;
+            }
             return false;
         }
     }

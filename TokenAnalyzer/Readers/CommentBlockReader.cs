@@ -14,11 +14,8 @@ namespace INNO_F20_CC.TokenAnalyzer
 
         public bool Read(string source, ref int i, ref string token)
         {
-            if (source[i] == '*' && source[i + 1] == '/')
-            {
-                i += 2;
+            if (source[i++] == '*' && source[i++] == '/')
                 return false;
-            }
             return true;
         }
     }

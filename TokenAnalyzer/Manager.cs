@@ -43,6 +43,7 @@ namespace INNO_F20_CC.TokenAnalyzer
 
         static IEnumerable<string> SplitSource(string source)
         {
+            var words = new List<string>();
             var reader = readers[0];
             var buffer = "";
             var line = 0;
@@ -50,32 +51,36 @@ namespace INNO_F20_CC.TokenAnalyzer
             if (source[source.Length - 1] != '\n')
                 source += '\n';
 
-            for (int i = 0; i < source.Length - 1; i++)
+            for (int i = 0; i < source.Length - 1;)
             {
-                char c = source[i];
-                if (c == '\n')
+                if (source[i] == '\n')
                     line++;
 
-                if (!reader.Read(source, ref i, ref buffer))
+                if (reader == null || !reader.Read(source, ref i, ref buffer))
                 {
                     if (buffer != string.Empty)
                     {
-                        yield return buffer;
+                        words.Add(buffer);
                         buffer = string.Empty;
                     }
-
                     reader = null;
-                    foreach (var r in readers)
-                        if (r.IsTrigger(source, ref i))
-                        {
-                            reader = r;
-                            break;
-                        }
 
-                    if (reader == null || !Char.IsControl(c) || c != ' ')
-                        Exit(line, i);
+                    if (source[i] == ' ' || Char.IsControl(source[i]))
+                        i++;
+                    else
+                    {
+                        foreach (var r in readers)
+                            if (r.IsTrigger(source, ref i))
+                            {
+                                reader = r;
+                                break;
+                            }
+                        if (reader == null)
+                            Exit(line, i);
+                    }
                 }
             }
+            return words;
         }
 
         static Token[] ClassifyWords(IEnumerable<string> words)
