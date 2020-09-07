@@ -22,6 +22,7 @@ namespace INNO_F20_CC.TokenAnalyzer
             var reader = readers[0];
             var buffer = "";
             var line = 0;
+            var column = 0;
 
             if (source[source.Length - 1] != '\n')
                 source += '\n';
@@ -29,14 +30,17 @@ namespace INNO_F20_CC.TokenAnalyzer
             for (int i = 0; i < source.Length - 1;)
             {
                 if (source[i] == '\n')
+                {
                     line++;
+                    column = 0;
+                }
 
                 if (reader == null || !reader.Read(source, ref i, ref buffer))
                 {
                     if (buffer != string.Empty)
                     {
                         if (reader.GetTokenType(buffer) is String type)
-                            tokens.Add(new Token(buffer, type, line, i));
+                            tokens.Add(new Token(buffer, type, line, column));
                         buffer = string.Empty;
                     }
                     reader = null;
@@ -52,7 +56,7 @@ namespace INNO_F20_CC.TokenAnalyzer
                                 break;
                             }
                         if (reader == null)
-                            Error(line, i);
+                            Error(line, column);
                     }
                 }
             }
