@@ -31,6 +31,9 @@ namespace INNO_F20_CC
             "else",
             "then",
             "return",
+        };
+        static readonly HashSet<string> delimiters = new HashSet<string>()
+        {
             ".",
             ",",
             ":",
@@ -41,18 +44,99 @@ namespace INNO_F20_CC
             ")"
         };
 
-        static string[] SplitSource(string source) =>
-           Regex
-               .Replace(source, @"(\n)|\s|//.*|(\d+\.\d+|:=|[\.,:\(\)\[\]])", @" $1 ")
-               .Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
+        static string[] SplitSource(string source){
+            int state = 0;
+            bool tokenReady = false;
+            List<String> tokenList = new List<string>();
+            string currentToken = "";
+            for (int i = 0; i < source.Length;){
+                if (state == 0){
+                    if (tokenReady == true){
+                        tokenList.Add(currentToken);
+                        tokenReady = false;
+                        currentToken = "";
+                    }
+                    if (source[i] == '\n'){
+                        tokenList.Add("\n");
+                    }
+                    else if ((int)source[i] == 13 && source[i + 1] == '\n'){
+                        tokenList.Add("\n");
+                        i++;
+                    }
+                    else if (Char.IsDigit(source[i])){
+                        currentToken += source[i];
+                        state = 4;
+                    }
+                    else if (Char.IsLetter(source[i]) || source[i] == '_'){
+                        currentToken += source[i];
+                        state = 1;
+                    }
+                    else if (source[i] == '(' || source[i] == ')' || source[i] == '[' || source[i] == ']'){
+                        currentToken += source[i];
+                        tokenReady = true;
+                    }
+                    else if (source[i] != ' ' && (int)source[i] != 9) {
+                        currentToken += source[i];
+                        state = 3;
+                    }
+                    i++;
+                }
+                else if (state == 1){
+                    if (Char.IsLetter(source[i]) || Char.IsDigit(source[i]) || source[i] == '_'){
+                        currentToken += source[i];
+                        i++;
+                    }
+                    else {
+                        state = 0;
+                        tokenReady = true;
+                    }
+                }
+                /*else if (state == 2){
+                    if (source[i] == '(' || source[i] == ')' || source[i] == '[' || source[i] == ']'){
+                        state = 0;
+                        currentToken += source[i];
+                        i++;
+                    }
+                    else {
+                        state = 0;
+                        tokenReady = true;
+                    }
+                }*/
+                else if (state == 3){
+                    if (source[i] != '(' && source[i] != ')' && source[i] != '[' && source[i] != ']' &&
+                        source[i] != '\n' && source[i] != ' ' && !Char.IsLetter(source[i]) && !Char.IsDigit(source[i]) && source[i] != '_'){
+                        currentToken += source[i];
+                        i++;
+                    }
+                    else {
+                        state = 0;
+                        tokenReady = true;
+                    }
+                }
+                else {
+                    if (Char.IsDigit(source[i]) || Char.IsLetter(source[i]) || source[i] == '_' || source[i] == '.'){
+                        currentToken += source[i];
+                        i++;
+                    }
+                    else {
+                        state = 0;
+                        tokenReady = true;
+                    }
+                }
+            }
+            return tokenList.ToArray();
+        }
         static Token[] ClassifyWords(string[] words)
         {
             var tokens = new List<Token>();
             var depth = 0;
             var line = 1;
+            
             foreach (var word in words)
             {
+                /*for (int i = 0; i < word.Length; ++i){
+                    Console.WriteLine((int)word[i]);
+                } */     
                 if (word == "\n")
                 {
                     line++;
@@ -65,18 +149,46 @@ namespace INNO_F20_CC
                     Line = line
                 };
 
+                //Console.WriteLine(word);        
                 if (keywords.Contains(word))
                     token.Type = "keyword";
+                else if (delimiters.Contains(word))
+                    token.Type = "delimiter";
                 else if (bool.TryParse(word, out _))
                     token.Type = "bool";
                 else if (int.TryParse(word, out _))
                     token.Type = "int";
-                else if (float.TryParse(word, out _))
-                    token.Type = "real";
-                else if (Regex.IsMatch(word, @"^[A-Za-z_]+\w*$"))
-                    token.Type = "name";
-                else
-                    Exit(word, line);
+                else {    
+                    bool correctToken = true;
+                    bool dot = false;
+                    for (int j = 0; j < word.Length; ++j){
+                        if (dot == false){
+                            if ((j == 0 || j == word.Length - 1) && word[j] == '.'){
+                                correctToken = false;
+                            }
+                            else if (word[j] != '.' && !Char.IsDigit(word[j])){
+                                correctToken = false;
+                            }
+                            else if (word[j] == '.'){
+                                dot = true;
+                            }
+                        }
+                        else {
+                            if (!Char.IsDigit(word[j])){
+                                correctToken = false;
+                            }
+                        }
+                    }
+                    if (correctToken){
+                        token.Type = "real";
+                    }
+                    else if (Regex.IsMatch(word, @"^[A-Za-z_]+\w*$")){
+                        token.Type = "identifier";
+                    }
+                    else {
+                        Exit(word, line);
+                    }
+                }
 
                 if (word == "loop" || word == "then" || word == "is")
                     depth++;
@@ -85,13 +197,13 @@ namespace INNO_F20_CC
 
                 tokens.Add(token);
             }
-            return tokens.ToArray(); ;
+            return tokens.ToArray();
         }
 
         public static void Analyze(string filename)
         {
             var source = File.ReadAllText(filename);
-            var Tokens = ClassifyWords(SplitSource(source));
+            var Tokens = ClassifyWords(SplitSource(source + "\r\n"));
             var serializeOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
