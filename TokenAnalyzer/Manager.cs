@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace INNO_F20_CC.TokenAnalyzer
 {
-    class TokenAnalyzer
+    public static class Manager
     {
         static readonly HashSet<string> keywords = new HashSet<string>()
         {
@@ -32,7 +32,7 @@ namespace INNO_F20_CC.TokenAnalyzer
             "(",
             ")"
         };
-        static readonly ITokenReader[] readers =
+        static readonly IReader[] readers =
         {
             new IdentifierReader(),
             new NumericReader(),

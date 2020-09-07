@@ -1,6 +1,6 @@
 namespace INNO_F20_CC.TokenAnalyzer
 {
-    class NumericReader : ITokenReader
+    class NumericReader : IReader
     {
         public bool IsTrigger(string source, ref int i) =>
             char.IsDigit(source[i]);

@@ -1,6 +1,6 @@
 namespace INNO_F20_CC.TokenAnalyzer
 {
-    class CommentBlockReader : ITokenReader
+    class CommentBlockReader : IReader
     {
         public bool IsTrigger(string source, ref int i)
         {

@@ -1,6 +1,6 @@
 namespace INNO_F20_CC.TokenAnalyzer
 {
-    class IdentifierReader : ITokenReader
+    class IdentifierReader : IReader
     {
         static bool IsLatinLetter(char c) =>
             c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';

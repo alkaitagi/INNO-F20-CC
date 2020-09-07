@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using INNO_F20_CC.TokenAnalyzer;
 
 namespace INNO_F20_CC
 {
@@ -8,7 +7,7 @@ namespace INNO_F20_CC
         static void Main(string[] args)
         {
             var source = File.ReadAllText(args[0]);
-            var tokens = TokenAnalyzer.Analyze(source);
+            var tokens = TokenAnalyzer.Manager.Analyze(source);
         }
     }
 }

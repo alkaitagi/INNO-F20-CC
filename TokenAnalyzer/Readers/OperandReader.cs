@@ -1,6 +1,6 @@
 namespace INNO_F20_CC.TokenAnalyzer
 {
-    class OperandReader : ITokenReader
+    class OperandReader : IReader
     {
         static readonly char[] operands = { '.', ',', ':', '=', '[', ']', '(', ')' };
 

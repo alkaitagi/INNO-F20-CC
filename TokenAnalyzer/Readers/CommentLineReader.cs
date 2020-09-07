@@ -1,6 +1,6 @@
 namespace INNO_F20_CC.TokenAnalyzer
 {
-    class CommentLineReader : ITokenReader
+    class CommentLineReader : IReader
     {
         public bool IsTrigger(string source, ref int i) =>
             source[i] == '/' && source[i + 1] == '/';

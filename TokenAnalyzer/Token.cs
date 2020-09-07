@@ -1,6 +1,6 @@
-namespace INNO_F20_CC
+namespace INNO_F20_CC.TokenAnalyzer
 {
-    class Token
+    public class Token
     {
         public string Type { get; set; }
         public string Context { get; set; }
