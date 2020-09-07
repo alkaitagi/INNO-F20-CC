@@ -43,6 +43,10 @@ namespace INNO_F20_CC.TokenAnalyzer
         }
 
         public string GetTokenType(string value) =>
-            keywords.Contains(value) ? "keyword" : "name";
+            value == "true" || value == "false"
+                ? "bool"
+                : keywords.Contains(value)
+                    ? "keyword"
+                    : "name";
     }
 }
