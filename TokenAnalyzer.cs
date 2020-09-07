@@ -8,15 +8,6 @@ namespace INNO_F20_CC
 {
     class TokenAnalyzer
     {
-        class Token
-        {
-            public string Type { get; set; }
-            public string Context { get; set; }
-            public string Value { get; set; }
-            public int Depth { get; set; }
-            public int Line { get; set; }
-        }
-
         static readonly HashSet<string> keywords = new HashSet<string>()
         {
             "class",
@@ -32,27 +23,135 @@ namespace INNO_F20_CC
             "else",
             "then",
             "return",
+            ":=",
             ".",
             ",",
             ":",
-            ":=",
             "[",
             "]",
             "(",
             ")"
         };
 
-        static string[] SplitSource(string source) =>
-           Regex
-               .Replace(source, @"(\n)|\s|//.*|(\d+\.\d+|:=|[\.,:\(\)\[\]])", @" $1 ")
-               .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        // Regex
+        //        .Replace(source, @"(\n)|\s|//.*|(\d+\.\d+|:=|[\.,:\(\)\[\]])", @" $1 ")
+        //        .Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        static Token[] ClassifyWords(string[] words)
+        static IEnumerable<string> SplitSource(string source)
+        {
+            static void SaveBuffer(ref string buffer, List<string> words)
+            {
+                if (buffer != "")
+                    words.Add(buffer);
+                buffer = "";
+            }
+
+            Func<char, bool> isBreak = c => Char.IsControl(c) || c == ' ';
+
+            var words = new List<string>();
+            var line = 0;
+            var buffer = "";
+            var state = "start";
+
+            if (source[source.Length - 1] != '\n')
+                source += '\n';
+            var sl = source.Length - 1;
+
+            for (int i = 0; i < sl; i++)
+            {
+                var c = source[i];
+                var cn = source[i + 1];
+                if (c == '\n')
+                    line++;
+
+                if (state == "start")
+                {
+                    if (Char.IsControl(c) || c == ' ')
+                        continue;
+                    if (Char.IsNumber(c))
+                    {
+                        buffer += c;
+                        state = "int";
+                    }
+                    else if (c == ':' && cn == '=')
+                    {
+                        words.Add(":=");
+                        i++;
+                    }
+                    else if (keywords.Contains(c.ToString()))
+                        words.Add(c.ToString());
+                    else if (c == '/' && cn == '*')
+                    {
+                        state = "commentBlock";
+                        i++;
+                    }
+                    else if (c == '/' && cn == '/')
+                    {
+                        state = "comment";
+                        i++;
+                    }
+                    else if (c == '_' || c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
+                    {
+                        buffer += c;
+                        state = "name";
+                    }
+                }
+                else if (state == "name")
+                {
+                    if (c == '_' || c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || Char.IsDigit(c))
+                        buffer += c;
+                    else
+                    {
+                        SaveBuffer(ref buffer, words);
+                        i--;
+                        state = "start";
+                    }
+
+                }
+                else if (state == "int" || state == "float")
+                {
+                    if (Char.IsNumber(c))
+                        buffer += c;
+                    else if (c == '.')
+                    {
+                        if (state == "int")
+                        {
+                            buffer += c;
+                            state = "float";
+                        }
+                        else
+                            Exit(line, i, "a digit");
+                    }
+                    else
+                    {
+                        SaveBuffer(ref buffer, words);
+                        i--;
+                        state = "start";
+                    }
+                }
+                else if (state == "comment")
+                {
+                    if (c == '\n')
+                        state = "start";
+                }
+                else if (state == "commentBlock")
+                {
+                    if (c == '*' && cn == '/')
+                    {
+                        state = "start";
+                        i++;
+                    }
+                }
+            }
+
+            return words;
+        }
+
+        static Token[] ClassifyWords(IEnumerable<string> words)
         {
             var tokens = new List<Token>();
-            var depth = 0;
             var line = 1;
-            var inComment = false;
+            var comment = false;
             foreach (var word in words)
             {
                 if (word == "\n")
@@ -60,22 +159,21 @@ namespace INNO_F20_CC
                     line++;
                     continue;
                 }
-                if (inComment)
+                if (comment)
                 {
                     if (word == "*/")
-                        inComment = false;
+                        comment = false;
                     continue;
                 }
                 if (word == "/*")
                 {
-                    inComment = true;
+                    comment = true;
                     continue;
                 }
 
                 var token = new Token()
                 {
                     Value = word,
-                    Depth = depth,
                     Line = line
                 };
 
@@ -89,35 +187,36 @@ namespace INNO_F20_CC
                     token.Type = "real";
                 else if (Regex.IsMatch(word, @"^[A-Za-z_]+\w*$"))
                     token.Type = "name";
-                else
-                    Exit(word, line);
-
-                if (word == "loop" || word == "then" || word == "is")
-                    depth++;
-                else if (word == "end")
-                    depth--;
+                // else
+                //     Exit(word, line);
 
                 tokens.Add(token);
             }
             return tokens.ToArray(); ;
         }
 
-        public static void Analyze(string filename)
+        public static Token[] Analyze(string source, bool serialize = true)
         {
-            var source = File.ReadAllText(filename);
+            foreach (var w in SplitSource(source))
+                Console.Write(w + "|");
+            Exit(1, 1, "");
             var Tokens = ClassifyWords(SplitSource(source));
-            var serializeOptions = new JsonSerializerOptions
+            if (serialize)
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
-            var result = JsonSerializer.Serialize(Tokens, serializeOptions);
-            File.WriteAllText("tokens.json", result);
+                var serializeOptions = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    WriteIndented = true
+                };
+                var result = JsonSerializer.Serialize(Tokens, serializeOptions);
+                File.WriteAllText("tokens.json", result);
+            }
+            return Tokens;
         }
 
-        static void Exit(string word, int line)
+        static void Exit(int line, int column, string expected)
         {
-            Console.WriteLine($"Error: unknown token {word} at line {line}.");
+            Console.WriteLine($"Error at {line}:{column}. Expected {expected}.");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
             Environment.Exit(0);

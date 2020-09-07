@@ -7,8 +7,8 @@ class math_formules is
 			c := c.Mult(i)
 			i := i.Plus(1)
 		end
+		var h := 1.//
 
 		return c
 	end
 end
-
