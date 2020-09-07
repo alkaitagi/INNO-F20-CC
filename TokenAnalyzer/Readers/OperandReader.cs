@@ -12,23 +12,25 @@ namespace INNO_F20_CC.TokenAnalyzer
             return false;
         }
 
-        public bool IsTrigger(string source, ref int i) =>
+        public bool CanTransition(string source, ref int i) =>
             IsOperand(source[i]);
 
-        public bool Read(string source, ref int i, ref string token)
+        public bool Read(string source, ref int i, ref string buffer)
         {
             var c = source[i];
             if (c == ':' && source[i + 1] == '=')
             {
-                token = ":=";
+                buffer = ":=";
                 i += 2;
             }
             else if (IsOperand(c))
             {
-                token += c;
+                buffer += c;
                 i++;
             }
             return false;
         }
+
+        public string GetTokenType(string word) => "operand";
     }
 }

@@ -2,10 +2,17 @@ namespace INNO_F20_CC.TokenAnalyzer
 {
     public class Token
     {
-        public string Type { get; set; }
-        public string Context { get; set; }
         public string Value { get; set; }
-        public int Depth { get; set; }
+        public string Type { get; set; }
         public int Line { get; set; }
+        public int Column { get; set; }
+
+        public Token(string value, string type, int line, int column)
+        {
+            Value = value;
+            Type = type;
+            Line = line;
+            Column = column;
+        }
     }
 }

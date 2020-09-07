@@ -2,7 +2,7 @@ namespace INNO_F20_CC.TokenAnalyzer
 {
     class CommentBlockReader : IReader
     {
-        public bool IsTrigger(string source, ref int i)
+        public bool CanTransition(string source, ref int i)
         {
             if (source[i] == '/' && source[i + 1] == '*')
             {
