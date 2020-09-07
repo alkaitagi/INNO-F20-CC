@@ -2,6 +2,10 @@ namespace INNO_F20_CC.TokenAnalyzer
 {
     class NumericReader : IReader
     {
+        int points;
+        public bool HasError() => points > 1;
+        public void Reset() => points = 0;
+
         public bool CanTransition(string source, ref int i) =>
             char.IsDigit(source[i]);
 
@@ -14,9 +18,21 @@ namespace INNO_F20_CC.TokenAnalyzer
                 i++;
                 return true;
             }
+            else if (c == '.')
+            {
+                buffer += c;
+                points++;
+
+                if (HasError())
+                    return false;
+
+                i++;
+                return true;
+            }
             return false;
         }
 
-        public string GetTokenType(string word) => "numeric";
+        public string GetTokenType(string word) =>
+            points == 0 ? "int" : "float";
     }
 }
