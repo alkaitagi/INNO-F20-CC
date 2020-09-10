@@ -1,6 +1,6 @@
 class Test2 is
 	this (n : Integer) is
-		var i : Integer(0)
+		var i : Integer(1.24)
 		var sum : Integer(0)
 		while i.LessEqual(n) loop
 			sum := sum.Plus(i)

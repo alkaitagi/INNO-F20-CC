@@ -1,3 +1,4 @@
+//Failing test
 class main is
 	method main is
 		var beka : bank_account(737, 017)
