@@ -1,4 +1,5 @@
-class Test4 extends shit is
+
+class Test4 extends smth is
 	this is
 		var size : Integer(3)
 		var people : Array[Person](size)
