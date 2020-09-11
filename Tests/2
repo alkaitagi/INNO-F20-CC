@@ -1,6 +1,5 @@
 class bank_account is
 	var card_id : Integer
-	var owner_id
 	var money : Integer
 
 	this (a : Integer, b : Integer) is 
@@ -16,7 +15,7 @@ class bank_account is
 	end
 
 	method draw_money (a : Integer) is
-		c := money,minus(a)
+		c := money.minus(a)
 		if c.GreaterEqual(0) then
 			money := c
 		end
