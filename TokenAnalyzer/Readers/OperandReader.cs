@@ -1,16 +1,13 @@
+using System.Linq;
+
 namespace INNO_F20_CC.TokenAnalyzer
 {
     class OperandReader : IReader
     {
-        static readonly char[] operands = { '.', ',', ':', '=', '[', ']', '(', ')' };
+        static readonly char[] operands = { '.', ',', ':', '[', ']', '(', ')' };
 
-        static bool IsOperand(char c)
-        {
-            foreach (var o in operands)
-                if (o == c)
-                    return true;
-            return false;
-        }
+        static bool IsOperand(char c) =>
+            operands.Contains(c);
 
         public bool CanTransition(string source, ref int i) =>
             IsOperand(source[i]);

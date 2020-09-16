@@ -12,7 +12,6 @@ namespace INNO_F20_CC
             var tokens = TokenAnalyzer.Manager.Analyze(source);
 
             var AST = SyntaxAnalyzer.Parser.ParseProgram(tokens);
-
         }
     }
 }
