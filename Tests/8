@@ -1,7 +1,7 @@
 class Test3 is
 	this is
 		var size : Integer(3)
-		var people : Array[Person](size)
+		var people : Array(size)
 		var person1 : Person(1, 20.35)
 		var person2 : Person(2, 46.33)
 		var person3 : Person(3, 31.52)
@@ -11,7 +11,7 @@ class Test3 is
 		var i : Integer(0)
 		var agesum : Real(0)
 		while i.LessEqual(size) loop
-			agesum := agesum.Plus(people.get(i).age)
+			agesum := agesum.Plus(people.get(i).age(4))
 			i := i.Plus(1)
 		end
 		var averageage : agesum.Div(size)
@@ -22,7 +22,7 @@ class Person is
 	var id : Integer
 	var age : Real
 	this(arg1 : Integer, arg2 : Real) is
-		this.id := arg1
+		this.setID(arg1)
 		this.age := arg2
 	end
 end

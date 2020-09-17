@@ -1,5 +1,5 @@
 class Test11 is
-    var inventory:List[blockItem]()
+    var inventory:List
     method add(arg1: Integer, arg2: Integer) is
         inventory.append(blockItem(arg1, arg2))
     end
