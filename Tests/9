@@ -1,7 +1,7 @@
 class Test4 is
 	this is
 		var size : Integer(3)
-		var people : Array[Person](size)
+		var people : Array(size)
 		var person1 : Person(1, 20.35)
 		var person2 : Person(2, 46.33)
 		var person3 : Person(3, 31.52)
