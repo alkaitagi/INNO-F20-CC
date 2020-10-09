@@ -43,8 +43,9 @@ namespace INNO_F20_CC.SyntaxAnalyzer {
                         node.ErrorLine = Parser.TokensArray[Math.Min(Parser.TokensArray.Length - 1, TokenNumber)].Line;
                         return node;
                     }
-                    node.AddCallee(CurrentCallee, arguments);
+                    
                 }
+                node.AddCallee(CurrentCallee, arguments);
                 if (Parser.NeededToken(TokenNumber, "value", ".", 0)){
                     TokenNumber++;
                     continue;

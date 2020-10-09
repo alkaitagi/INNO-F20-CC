@@ -1,11 +1,11 @@
 class Test13 is
-    var catalog: Array(10000)
+    var catalog: Song
     method Listen(id: Integer) is
-      catalog.get(id).setStreams(catalog.get(id).streams.Plus(1))
+      catalog.setStreams(catalog.streams.Plus(1))
     end
     
     method Add(id: Integer, duration: Integer) is
-      catalog.set(id, Song(id, duration))
+      catalog := Song(id, duration)
     end
 end    
     
@@ -14,7 +14,10 @@ class Song is
   var duration: Integer(0)
   var streams: Integer(0)
   this(arg1: Integer, arg2: Integer) is
-    this.id := arg1
-    this.duration := arg2
+    id := arg1
+    duration := arg2
+  end
+  method setStreams(n : Integer) is
+    streams := n
   end
 end

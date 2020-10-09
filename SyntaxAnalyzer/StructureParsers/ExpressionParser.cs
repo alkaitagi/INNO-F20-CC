@@ -32,6 +32,7 @@ namespace INNO_F20_CC.SyntaxAnalyzer {
                 node.ErrorLine = cnode.ErrorLine;
                 return node;
             }
+            node.ExpressionType = "call";
             node.TokenNumber = cnode.TokenNumber;
             node.SetCall(cnode);
             return node;

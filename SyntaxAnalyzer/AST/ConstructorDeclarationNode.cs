@@ -10,6 +10,13 @@ namespace INNO_F20_CC.SyntaxAnalyzer {
             ParameterTypes = new List<string>();
             BodyNodes = new List<Node>();
         }
+
+        public ConstructorDeclarationNode(List<string> parameterNames, List<string> parameterTypes)
+        {
+            ParameterNames = parameterNames;
+            ParameterTypes = parameterTypes;
+            BodyNodes = new List<Node>();
+        }
         public void AddParameter(string ParameterName, string ParameterType){
             ParameterNames.Add(ParameterName);
             ParameterTypes.Add(ParameterType);
