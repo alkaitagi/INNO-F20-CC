@@ -24,6 +24,8 @@ namespace INNO_F20_CC.SemanticsAnalyzer
             {
                 CheckClass((ClassDeclarationNode)_rootNode.ClassDeclarations[i]);
             }
+
+            AddDestructors();
         }
 
         static ClassDeclarationNode findClass(string name)
@@ -563,12 +565,12 @@ namespace INNO_F20_CC.SemanticsAnalyzer
             }
         }
 
-        static void AddDestructors(ref RootNode rootNode)  //Adds destructor method for every class
+        static void AddDestructors()  //Adds destructor method for every class
         {
-            foreach(ClassDeclarationNode classDeclaration in rootNode.ClassDeclarations)
+            foreach(ClassDeclarationNode classDeclaration in _rootNode.ClassDeclarations)
             {
                 bool noDestructor = true;
-                foreach (MethodDeclarationNode method in classDeclaration.ConstructorDeclarations)
+                foreach (MethodDeclarationNode method in classDeclaration.MethodDeclarations)
                 {
                     if (method.isDestruction)
                     {
@@ -585,7 +587,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
 
         static MethodDeclarationNode GenerateDestructor(ClassDeclarationNode classDeclarationNode)  //Generates destruction method from variable list in class
         {
-            foreach (MethodDeclarationNode method in classDeclarationNode.ConstructorDeclarations)  //check if method already given
+            foreach (MethodDeclarationNode method in classDeclarationNode.MethodDeclarations)  //check if method already given
             {
                 if (method.isDestruction)
                 {
