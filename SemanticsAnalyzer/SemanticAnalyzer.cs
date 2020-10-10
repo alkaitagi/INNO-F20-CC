@@ -18,7 +18,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
             _rootNode = rootNode;
             _tokens = tokens;
             AddBasicClasses();
-            AddDefaultConstructors();
+            //AddDefaultConstructors();
 
             for (int i = 0; i < _rootNode.ClassDeclarations.Count - 7; i++)
             {
@@ -560,7 +560,12 @@ namespace INNO_F20_CC.SemanticsAnalyzer
                 }
                 if (!emptyConstructor)
                 {
-                    classDeclaration.AddConstructorDeclaraton(new ConstructorDeclarationNode());
+                    //classDeclaration.AddConstructorDeclaraton(new ConstructorDeclarationNode());
+                    ConstructorDeclarationNode constructor = new ConstructorDeclarationNode();
+                    foreach (VariableDeclarationNode variable in classDeclaration.VariableDeclarations)
+                    {
+                        
+                    }
                 }
             }
         }
@@ -658,6 +663,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
                 },
                 new List<Node>()
                 {
+                    new ConstructorDeclarationNode(),
                     new ConstructorDeclarationNode(new List<string>() {"p"}, new List<string>() {"Integer"}),
                     new ConstructorDeclarationNode(new List<string>() {"p"}, new List<string>() {"Real"})
                 },
@@ -709,6 +715,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
                 },
                 new List<Node>()
                 {
+                    new ConstructorDeclarationNode(),
                     new ConstructorDeclarationNode(new List<string>() {"p"}, new List<string>() {"Integer"}),
                     new ConstructorDeclarationNode(new List<string>() {"p"}, new List<string>() {"Real"})
                 },
@@ -733,6 +740,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
                 }
                 , new List<Node>()
                 {
+                    new ConstructorDeclarationNode(),
                     new ConstructorDeclarationNode(new List<string>(){"p"},new List<string>(){"Boolean"} )
                 }, 
                     new List<Node>());
@@ -749,6 +757,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
                 }
                 , new List<Node>()
                 {
+                    new ConstructorDeclarationNode(),
                     new ConstructorDeclarationNode(new List<string>(){"l"},new List<string>(){"Integer"} )
                 }, 
                 new List<Node>());
@@ -763,6 +772,7 @@ namespace INNO_F20_CC.SemanticsAnalyzer
                 }
                 , new List<Node>()
                 {
+                    new ConstructorDeclarationNode(),
                     new ConstructorDeclarationNode(new List<string>(){},new List<string>(){} ),
                     new ConstructorDeclarationNode(new List<string>(){"p"},new List<string>(){"T"} ),
                     new ConstructorDeclarationNode(new List<string>(){"p","count"},new List<string>(){"T","Integer"} )
