@@ -42,6 +42,7 @@ end
             
             SemanticAnalyzer.SemanticAnalysis(ref AST, ref tokens);
             Console.WriteLine("всё!");
+            
             Console.Read();
 
         }
